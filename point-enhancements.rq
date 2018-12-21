@@ -1,0 +1,22 @@
+prefix traces: <http://www.tomtom.com/ontologies/traces#>
+prefix geo:	<http://www.opengis.net/ont/geosparql#>
+prefix sf: <http://www.opengis.net/ont/sf#>
+
+INSERT {
+	GRAPH <myGraphIRI> {
+		?point rdf:type geo:Feature .
+		?point rdf:type traces:TracePoint .
+		?point geo:hasGeometry ?pointGeomID .
+		?pointGeomID a sf:Point .
+		?pointGeomID geo:asWKT ?wkt . 
+	}
+}
+WHERE {
+	GRAPH <myGraphIRI> {
+		?point a traces:TracePoint ;
+			traces:lon ?lon ;
+			traces:lat ?lat .
+		bind(iri(concat(str(?point), '_geom')) as ?pointGeomID)
+		bind(strdt(concat('POINT(', ?lon, ' ', ?lat, ')'), geo:wktLiteral) as ?wkt)
+	}
+}

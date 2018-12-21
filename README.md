@@ -12,7 +12,7 @@ Each `Trace` is enhanced to represent a `geo:Feature` entity, which has a `geo:h
 
 ## Point Transformations
 
-Each `Point` is enhanced to represent a `geo:Feature` entity, which has a `geo:hasGeometry` relation with a geometry entity specified as a `sf:Point` entity. The `sf:Point` entity has a `geo:asWKT` relation to a `geo:wktLiteral` value, which represents the entire `Point` as a GeoSPARQL `POINT`.
+Each `Point` is enhanced to represent a `geo:Feature` entity, which has a `geo:hasGeometry` relation with a geometry entity specified as a `sf:Point` entity. The `sf:Point` entity has a `geo:asWKT` relation to a `geo:wktLiteral` value, which represents the `Point` as a GeoSPARQL `POINT`.
 
 ## Variables
 

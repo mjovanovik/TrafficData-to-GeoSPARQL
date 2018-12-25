@@ -1,6 +1,6 @@
-prefix traces: <http://www.tomtom.com/ontologies/traces#>
+prefix traces:	<http://www.tomtom.com/ontologies/traces#>
 prefix geo:	<http://www.opengis.net/ont/geosparql#>
-prefix sf: <http://www.opengis.net/ont/sf#>
+prefix sf:	<http://www.opengis.net/ont/sf#>
 
 INSERT {
 	GRAPH <myGraphIRI> {

@@ -1,0 +1,30 @@
+prefix traces:	<http://www.tomtom.com/ontologies/traces#>
+
+INSERT {
+	GRAPH <myGraphIRI> {
+		?trace traces:numID ?numid .
+		?trace traces:hasStartPoint ?startPoint .
+		?trace traces:hasEndPoint ?endPoint .
+		?trace traces:hasDuration ?duration .
+	}
+}
+WHERE {
+	GRAPH <myGraphIRI> {
+		SELECT ?trace, ?startPoint, ?endPoint, ?duration, ?numid
+		WHERE {
+			GRAPH <myGraphIRI> {
+				SELECT ?trace, (min(?timestamp) as ?startPointTime), (max(?timestamp) as ?endPointTime), (max(?timestamp) - min(?timestamp) as ?duration)
+				WHERE { 
+					?trace a traces:Trace .
+					?trace traces:hasPoint ?point . 
+					?point traces:hasTimestamp ?timestamp .
+				}
+			}
+			?trace traces:hasPoint ?startPoint .
+			?startPoint traces:hasTimestamp ?startPointTime .
+			?trace traces:hasPoint ?endPoint .
+			?endPoint traces:hasTimestamp ?endPointTime .
+			bind(xsd:integer(replace(replace(str(?trace), 'http://www.tomtom.com/trace-data/' ,''), '.ttl#trace', '' )) as ?numid)
+		}
+	}
+}

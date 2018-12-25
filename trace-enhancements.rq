@@ -20,9 +20,9 @@ WHERE {
 					?trace a traces:Trace ;
 						traces:hasPoint ?point .
 					?point traces:hasTimestamp ?timestamp ;
-						geo:hasGeometry ?pointGeomID .
-					?pointGeomID geo:asWKT ?wkt .
-					bind(replace(replace(str(?wkt), 'POINT\\(', '', 'i'), '\\)', '', 'i') as ?wktPoint)
+						traces:lon ?lon ;
+						traces:lat ?lat .
+					bind(concat(?lon, ' ', ?lat) as ?wktPoint)
 				}
 			} 
 			ORDER BY ?trace ?timestamp

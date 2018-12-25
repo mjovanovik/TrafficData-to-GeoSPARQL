@@ -18,9 +18,9 @@ Each `Point` is enhanced to represent a `geo:Feature` entity, which has a `geo:h
 
 To support specific use-cases as part of our [SAGE Project](http://sageproject.eu/), we add several additional transformations, which do not necessarily relate to GeoSPARQL:
 
-	- Adding a numerical ID to each trace, via a new property: `traces:numID`;
-	- Adding an explicit relation between a `Trace` and its start and end points, via new properties: `traces:hasStartPoint` and `traces:hasEndPoint`, respectively;
-	- Adding an explicit relation between a `Trace` and its calculated duration, in seconds, via a new property: `traces:hasDuration`;
+- Adding a numerical ID to each trace, via a new property: `traces:numID`;
+- Adding an explicit relation between a `Trace` and its start and end points, via new properties: `traces:hasStartPoint` and `traces:hasEndPoint`, respectively;
+- Adding an explicit relation between a `Trace` and its calculated duration, in seconds, via a new property: `traces:hasDuration`;
 
 ## Variables
 

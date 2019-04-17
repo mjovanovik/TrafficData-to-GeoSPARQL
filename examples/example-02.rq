@@ -1,0 +1,30 @@
+# Use-Case: Find all vehicle traces which have a given map region as a destination. The query selects all traces which satisfy the constraints, gets their WKT LINESTRING values, their duration and calculates the distance between the starting point and the ending point of the trace.
+
+prefix traces: <http://www.tomtom.com/ontologies/traces#>
+prefix geo: <http://www.opengis.net/ont/geosparql#>
+prefix sf: <http://www.opengis.net/ont/sf#>
+prefix geof: <http://www.opengis.net/def/function/geosparql/>
+prefix units: <http://www.opengis.net/def/uom/OGC/1.0/>
+
+SELECT ?wkt ?date ?duration ?distance ?traceID
+FROM <http://sageproject.eu/data/tomtom/leipzig#>
+WHERE { 
+    ?trace a traces:Trace ;
+        geo:hasGeometry ?traceGeom ;
+        traces:numID ?traceID ;
+        traces:hasDuration ?duration ;
+        traces:hasStartPoint ?start ;
+        traces:hasEndPoint ?end .
+    ?traceGeom geo:asWKT ?wkt .
+    ?start traces:hasTimestamp ?date ;
+        geo:hasGeometry ?startGeom .
+    ?startGeom geo:asWKT ?startWKT .
+    ?end geo:hasGeometry ?endGeom .
+    ?endGeom geo:asWKT ?endWKT .
+
+    FILTER(geof:sfContains(bif:ST_GeometryFromText("POLYGON((12.346821967457686 51.34679532759259,12.348366919850264 51.34703657322223,12.350898925160323 51.347063378213775,12.352486792897139 51.34655408069294,12.353817168568526 51.34574991518828,12.354503814076338 51.344490027525744,12.354503814076338 51.343417755424134,12.35394591460124 51.34258672728989,12.35347384581462 51.34175568408737,12.351928893422041 51.34097824293381,12.349997702931319 51.34062973054985,12.347508612965498 51.34081739139357,12.345491591786299 51.341809300232576,12.344676200245772 51.34301564691818,12.344590369557295 51.344490027525744,12.345148269032393 51.34566949786171,12.346821967457686 51.34679532759259))"), ?endWKT))
+
+    BIND(geof:distance(?startWKT, ?endWKT, units:meter) as ?distance)
+}
+ORDER BY ?date
+LIMIT 20

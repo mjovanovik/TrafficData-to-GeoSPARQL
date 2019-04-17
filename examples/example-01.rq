@@ -1,0 +1,31 @@
+# Use-Case: Find all vehicle traces started within a specified time period and select their respective WKT LINESTRING values, to be drawn on the map. Additionally, select the duration of each such trace, and calculate the distance between the starting point and the ending point of the trace.
+
+prefix traces: <http://www.tomtom.com/ontologies/traces#>
+prefix geo: <http://www.opengis.net/ont/geosparql#>
+prefix sf: <http://www.opengis.net/ont/sf#>
+prefix geof: <http://www.opengis.net/def/function/geosparql/>
+prefix units: <http://www.opengis.net/def/uom/OGC/1.0/>
+
+SELECT ?wkt ?date ?duration ?distance ?traceID
+FROM <http://sageproject.eu/data/tomtom/leipzig#>
+WHERE { 
+    ?trace a traces:Trace ;
+        geo:hasGeometry ?traceGeom ;
+        traces:hasStartPoint ?start ;
+        traces:hasEndPoint ?end ;
+        traces:hasDuration ?duration ;
+        traces:numID ?traceID .
+    ?traceGeom geo:asWKT ?wkt .
+    ?start traces:hasTimestamp ?date .
+    
+    FILTER (?date >= "2017-05-03T06:00:00Z"^^xsd:dateTime && ?date <= "2017-05-03T23:45:00Z"^^xsd:dateTime)
+    
+    ?start geo:hasGeometry ?startGeom .
+    ?startGeom geo:asWKT ?startWKT .
+    ?end geo:hasGeometry ?endGeom .
+    ?endGeom geo:asWKT ?endWKT .
+        
+    BIND(geof:distance(?startWKT, ?endWKT, units:meter) as ?distance)
+}
+ORDER BY ?date
+LIMIT 20
